@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Linking,Keyboard,  TouchableWithoutFeedback } from 'react-native'; 
+import { View, Text, Image, Linking } from 'react-native'; 
 import { connect } from 'react-redux';
 
 import CardSection from './../components/CardSection/index';
@@ -26,53 +26,21 @@ import Routes from './../config/routes';
 import { AppNavigator } from './../config/routes';
 import { NavigationActions } from 'react-navigation';
 
-
-
+let urlDoctors = "https://www.google.com/maps/search/?api=1&query=therapists"
+let depressionText = "The first step in getting treatment for depression is making an appointment with your general practitioner. They can recommend doctors in your area.   If you’re religious, ask your religious leader if they have counselors to recommend. Some people prefer faith-based counseling, which incorporates their religion into a treatment plan. You can also check healthcare databases for therapists, psychiatrists, and counselors. These databases can provide you with information such as certifications, accepted insurance providers, and reviews left by other people. Search for Therapists near you"
 class LoginRedux extends Component {
-   
+
     
     render() {
         console.log('Props in Welcome', this.props);
         const { navigate } = this.props.navigation;
         return (
-            <TouchableWithoutFeedback onPress={
-                Keyboard.dismiss
-                } >
-            <View style={{ flex: 1, backgroundColor: '#82ADCE'}} >
-                
-                
-                
-                <View style={{ flex: 4}}>
-                    <Input 
-                        style={styles.input} 
-                        placeholder="Enter your Username" 
-                        onChangeText={text => this.props.UserSearchAction('username', text)}
-                        autoFocus={false}
-                        returnKeyType='done'
-                    />
-                </View>
-                <View style={{ height: 40, backgroundColor: 'transparent', flex: 1 }}>
-                    {/* <Text
-                    style={styles.buttonStyle}
-                    onPress={() => console.log("Pressed Search")}
-                    >
-                        Search
-                    </Text> */}
-                        <Animatable.View 
-                            animation="bounceIn" 
-                            style={styles.text}
-                            delay={1000}
-                        >
-                        <ButtonNPM style={{backgroundColor: '#163A56'}} textStyle={{fontSize: 18}} onPress={() => this.props.navigation.navigate("UserInfo")}>
-                            Search
-                        </ButtonNPM>
-                        </Animatable.View>
-                    
-                    
-                    
-                </View>
+            <View style={{ flex: 1, backgroundColor: 'lightblue'}} >
+                <Text style={styles.text}> {depressionText}</Text>
+                <Text style={{ color: 'darkblue', fontWeight: 'bold', alignSelf: 'center', fontSize: 20, paddingTop: 30}}onPress={() => Linking.openURL(urlDoctors)}>
+                Find Doctors
+                </Text>
             </View>
-            </TouchableWithoutFeedback>
         );
     }
 }
@@ -103,6 +71,10 @@ const styles = {
 
 
              //height: 20,
+         },
+         text: {
+             fontSize: 20,
+             textAlign: 'center'
          }
 }
 
