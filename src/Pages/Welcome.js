@@ -46,9 +46,10 @@ class LoginRedux extends Component {
                     <Input 
                         style={styles.input} 
                         placeholder="Enter your Username" 
-                        onChangeText={text => this.props.UserSearchAction('username', text)}
+                        onChangeText={text => this.props.UserSearchAction(text,'username')}
                         autoFocus={false}
                         returnKeyType='done'
+                        value={this.props.username}
                     />
                 </View>
                 <View style={{ height: 40, backgroundColor: 'transparent', flex: 1 }}>
@@ -63,7 +64,11 @@ class LoginRedux extends Component {
                             style={styles.text}
                             delay={1000}
                         >
-                        <ButtonNPM style={{backgroundColor: '#163A56'}} textStyle={{fontSize: 18}} onPress={() => this.props.navigation.navigate("UserInfo")}>
+                        <ButtonNPM style={{backgroundColor: '#163A56'}} textStyle={{fontSize: 18}} onPress={() => {
+                            this.props.navigation.navigate("UserInfo")
+                            this.props.GetDataAPI({ Name: this.props.username})
+                        }}
+                        >
                             Search
                         </ButtonNPM>
                         </Animatable.View>
@@ -116,7 +121,7 @@ bindActionCreators(
 
 const mapStateToProps = (state) => {
     console.log("State Map", state)
-    //const { username } = Games;
+    //const { username } = state.User;
     return {
         //username
     };

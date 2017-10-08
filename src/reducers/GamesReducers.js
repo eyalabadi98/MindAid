@@ -9,43 +9,16 @@ import {
     RESET_REDUX_GAMES,
     SUBMIT_GAME_FORM,
     RESET_SAVED,
-    API_EMAIL_SUCCESS,
+    API_DATA_SUCCESS,
     USER_SEARCH_UPDATE
 } from '../actions/types';
 
 const INITIAL_STATE = {
-    gameKey: null,
-    games: {
-        games: {}
+    Data: {
+        
     },
-    team1Signature: '',
-    EmailAPI: {
-        email: '',
-    },
-    team2Signature: '',
-    team1Score: '',
-    Email: '',
-    team2Score: '',
-    gameDetails: '',
-    gameInfo: {
-        Category: '',
-         Key: '', 
-         Date: '',
-          Date_and_Time: '',
-          Event: '',
-          Location: '',
-          Other: '',
-          Time: '', 
-         Participant_1: '',
-          Participant_2: '',
-          Updatable: '',
-          team1Score: '',
-          team2Score: '',
-          gameDetails: '',
-          team2Signature: '',
-          team1Signature: '',
-          success: {},
-    }
+    username: '',
+    
 };
 
 
@@ -63,9 +36,10 @@ export default (state = INITIAL_STATE, action) => {
                 [action.payload.prop]: action.payload.value
             };
         case USER_SEARCH_UPDATE:
+            console.log("Action in user search", action);
             return {
                 ...state,
-                [action.field]: action.value
+                username: action.payload
             };
         case SUBMIT_GAME_FORM:
             return {
@@ -83,10 +57,10 @@ export default (state = INITIAL_STATE, action) => {
             };
         case GAME_SUBMIT_FORM:
             return INITIAL_STATE;
-        case API_EMAIL_SUCCESS:
+        case API_DATA_SUCCESS:
             return {
                 ...state,
-                EmailAPI: action.payload
+                data: action.payload
             };
         case RESET_SAVED:
             

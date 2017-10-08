@@ -66,11 +66,12 @@ let pointUserComments = 1;
 let friendsPercen = 56.55;
 let photosPerc = 87.434;
 let userCommentsPerfect = 23.434;
+let numberofPoints = 1900;
 
 let questionsText = "This data was obtained from the following journal: ";
 let urlJournal = "https://epjdatascience.springeropen.com/articles/10.1140/epjds/s13688-017-0110-z";
-
-var progress = score/100;
+let colorOfBar = "green"
+var progress = numberofPoints/2000;
 var newProgress = progress;
 console.log("ProgressNew", seconds);
 for (i = 0; i < seconds; i++) { 
@@ -114,11 +115,18 @@ class UserInfo extends Component {
         };
       }
       componentDidMount() {
+          
         this.animate();
+        if (newProgress > 1300){
+            colorOfBar = "yellow"
+        }
+        else if (numberofPoints > 1675) {
+            colorOfBar = "red"
+        }
          
-        if (this.state.reccomendation) {
+        if (numberofPoints > 1675) {
             Alert.alert(
-                "We think you need help!",
+                "We think you might need help!",
                 "Can we take you to some resources?",
                 //onPress: this.onSubmitPress.bind(this)
                 [
@@ -172,8 +180,8 @@ class UserInfo extends Component {
           this.setState({ indeterminate: false });
           setInterval(() => {
             progress += Math.random() / 3;
-            if (progress > score/100) {
-              progress = score/100;
+            if (progress > newProgress) {
+              progress = newProgress;
             }
             this.setState({ progress });
           }, 500);
@@ -191,8 +199,9 @@ class UserInfo extends Component {
                 <Progress.Pie 
                 progress={this.state.progress}
                 indeterminate={this.state.indeterminate} 
-                size={200} />
-               <Text style={{ paddingBottom: 50 }}> Your score = {newProgress}</Text>
+                size={200} 
+                color={colorOfBar}/>
+               <Text style={styles.pointsText}> {numberofPoints}/2000 Points </Text>
                 </View>
                 
                   
@@ -597,6 +606,14 @@ const styles = {
         fontSize: 15,
         alignSelf: 'flex-end'
     },
+    pointsText: {
+        fontSize: 20,
+        color: 'black',
+        paddingTop: 10,
+        alignSelf: 'center',
+        paddingBottom: 10,
+
+    }
 }
 
 const mapDispatchToProps = dispatch =>

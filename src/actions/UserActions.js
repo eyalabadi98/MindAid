@@ -13,7 +13,7 @@ import {
     ADMIN_RESET_REDUX_GAMES,
     SUBMIT_GAME_FORM,
     RESET_SAVED,
-    API_EMAIL_SUCCESS,
+    API_DATA_SUCCESS,
     USER_SEARCH_UPDATE
 
 
@@ -21,29 +21,30 @@ import {
 
 
 
-export const UserSearchAction = (text) => {
+export const UserSearchAction = (data) => {
+    console.log("Data in userSearch", data )
     return {
         type: USER_SEARCH_UPDATE,
-        payload: text
+        payload: data
     };
 };
 
 
 
 export const GetDataAPI= ({
-    Sport
+    Name
  }) => {
-    // const API_EMAIL_SEARCH = `http://api.maccabigamesjcc.me:3000/tasks/${Sport}`;
-    // console.log('Requesting URl', API_EMAIL_SEARCH);
-    // return (dispatch) => {
+    const API_EMAIL_SEARCH = `http://f1bce1e9.ngrok.io/api/bloggers/${Name}`;
+    console.log('Requesting URl', API_EMAIL_SEARCH);
+    return (dispatch) => {
 
-    // fetch(API_EMAIL_SEARCH)
-    // .then((res) => res.json())
-    // .then((json) => {
-    //     console.log('Looking for email address', json);
-    //     dispatch({ type: API_EMAIL_SUCCESS, payload: json });
+    fetch(API_EMAIL_SEARCH)
+    .then((res) => res.json())
+    .then((json) => {
+        console.log('Looking for email address', json);
+        dispatch({ type: API_DATA_SUCCESS, payload: json });
     
-    //     });
-    // }
+        });
+    }
 
 };

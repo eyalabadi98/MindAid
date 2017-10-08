@@ -20,7 +20,7 @@ export const RESET_REDUX_GAMES = 'reset_redux_games';
 export const ADMIN_RESET_REDUX_GAMES = 'admin_reset_redux_games';
 export const SUBMIT_GAME_FORM = 'submit_game_form';
 export const RESET_SAVED = 'reset_saved';
-export const API_EMAIL_SUCCESS = 'api_email_success';
+export const API_DATA_SUCCESS = 'api_email_success';
 //added after ekam
 
 export const DRIVER_ACCEPTED_FETCH_SUCCESS = 'driver_accepted_fetch_success';

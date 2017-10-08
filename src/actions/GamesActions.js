@@ -380,11 +380,12 @@ export const AdmingamesInfoFormInput = (field, value): GamesSearchAction => {
 
 
 
-export const GamesAddForm = ({ prop, value }) => {
+export const GamesAddForm = (field, value) => {
     return {
        
         type: ADD_GAME_FORM,
-        payload: { prop, value }
+        field,
+        value
     };
 };
 
