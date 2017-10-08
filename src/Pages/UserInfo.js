@@ -17,6 +17,9 @@ import {
 import { connect } from 'react-redux';
 
 
+var MessageBarAlert = require('react-native-message-bar').MessageBar;
+var MessageBarManager = require('react-native-message-bar').MessageBarManager;
+
 import CardSection from './../components/CardSection/index';
 import CardSectionInput from './../components/CardSectionInput/index';
 import Card from './../components/Card/index';
@@ -44,42 +47,15 @@ import { NavigationActions } from 'react-navigation';
 import Tabs from 'react-native-tabs';
 import BottomTab from './bottomTab';
 
-let likes = 300;
-let comments = 200;
-let photos = 100;
-let score = 60;
-let averageLikes = 200;
-let averageComments = 400;
-let averagePhotos = 40;
-let likesPercent = 86.33;
-let commentPercent = 823.33;
-let photosPercent = 81111.33;
-let pointsComments = 3;
-let pointsPhotos = 2;
-let pointsLikes = 4;
-let averageFriends = 340;
-let friends = 200;
-let pointFriends = 1;
-let averageUsercomments = 340;
-let user_comments = 200;
-let pointUserComments = 1;
-let friendsPercen = 56.55;
-let photosPerc = 87.434;
-let userCommentsPerfect = 23.434;
-let numberofPoints = 1900;
-
+let numberofPoints = 0;
+let likes = 0;
+let likesPercent = '';
+let averageLikes= '';
 let questionsText = "This data was obtained from the following journal: ";
 let urlJournal = "https://epjdatascience.springeropen.com/articles/10.1140/epjds/s13688-017-0110-z";
 let colorOfBar = "green"
-var progress = numberofPoints/2000;
-var newProgress = progress;
-console.log("ProgressNew", seconds);
-for (i = 0; i < seconds; i++) { 
-    var seconds = new Date().getTime() / 1000;
-    newProgress = i;
-    
-}
 
+let progress = 0;
 const ANIMATION_TYPES = {
     'Fading Entrances': [
       'fadeIn',
@@ -95,6 +71,7 @@ const ANIMATION_TYPES = {
   };
   
 var delaySeconds = 800;
+let risk = '';
 
 class UserInfo extends Component {
 
@@ -102,7 +79,7 @@ class UserInfo extends Component {
         super(props);
         this.state = {
             page:'second',
-            modalLikes: false,
+            modalBlogTraffic: false,
             modalComments: false,
             modalPhotos: false,
             progress: 0,
@@ -113,18 +90,83 @@ class UserInfo extends Component {
             modalUserComments: false,
 
         };
+       
+
+      }
+      componentWillMount() {
+        //let BlogTraffic = 300;
+        let comments = this.props.data.MyComments;
+        let photos = this.props.Photos;
+        let score = 60;
+        let averageLikes = 200;
+        let averageComments = 400;
+        let averagePhotos = 40;
+        //let BlogTraffic = this.props.data.BlogTraffic;
+        let commentPercent = 823.33;
+        let photosPercent = 81111.33;
+        let pointsComments = 3;
+        let pointsPhotos = 2;
+        let pointsLikes = 4;
+        let averageFriends = 340;
+        let friends = this.props.data.Friends;
+        let pointFriends = this.props.data.Friends_points;
+        let averageUsercomments = 340;
+        let user_comments = 200;
+        let pointUserComments = 1;
+        let friendsPercen = this.props.data.Friends_percentile;
+        let photosPerc = 87.434;
+        let userCommentsPerfect = 23.434;
+        let numberofPoints = this.props.data.Total_points;
+        
+        let progress = numberofPoints/2000;
+        //let newProgress = progress;
+
+        
+          
       }
       componentDidMount() {
-          
+
+        
+
         this.animate();
-        if (newProgress > 1300){
-            colorOfBar = "yellow"
+        MessageBarManager.registerMessageBar(this.refs.alert);
+        if (this.props.data.Total_points > 1300 && this.props.data.Total_points < 1675){
+            colorOfBar = "yellow";
+            MessageBarManager.showAlert({
+                title: 'You are at a medium risk of Depression',
+                message: 'We suggest learning more about this issue and reccomend talking to a loved one about what you might be going through',
+                alertType: 'warning',
+                duration: 8000,
+                // See Properties section for full customization
+                // Or check `index.ios.js` or `index.android.js` for a complete example
+              });
+              risk = "Medium"
         }
-        else if (numberofPoints > 1675) {
+        else if (this.props.data.Total_points > 1675 && this.props.data.Total_points < 4000) {
             colorOfBar = "red"
+            MessageBarManager.showAlert({
+                title: 'You are at a higb risk of Depression',
+                message: 'Please find some help and talk inmediatly to a family member, doctor or friend! It always help',
+                alertType: 'error',
+                duration: 8000,
+                // See Properties section for full customization
+                // Or check `index.ios.js` or `index.android.js` for a complete example
+              });
+              risk = "High"
+        }
+        else {
+            MessageBarManager.showAlert({
+                title: 'You are at a low risk of Depression',
+                message: 'We still suggest talking to your doctor on a regular basis',
+                alertType: 'success',
+                duration: 8000,
+                // See Properties section for full customization
+                // Or check `index.ios.js` or `index.android.js` for a complete example
+              });
+              rish = "Low"
         }
          
-        if (numberofPoints > 1675) {
+        if (this.props.data.Total_points > 1675) {
             Alert.alert(
                 "We think you might need help!",
                 "Can we take you to some resources?",
@@ -141,14 +183,24 @@ class UserInfo extends Component {
               );
         
       }
+      
+      
+     
+      
     }
+
+      
+      componentWillUnmount() {
+        // Remove the alert located on this master page from the manager
+        MessageBarManager.unregisterMessageBar();
+      }
 
     
       setModalVisible(modal, visible) {
         console.log("Modal VIsible", modal)
-          if (modal == "likes") {
-            console.log("Modal VIsible for likes", visible)
-            this.setState({modalLikes: visible});
+          if (modal == "blogTraffic") {
+            console.log("Modal VIsible for blogtraffic", visible)
+            this.setState({modalBlogTraffic: visible});
           }
           else if (modal == "comments") {
             console.log("Modal VIsible for comments", visible)
@@ -164,28 +216,34 @@ class UserInfo extends Component {
         }
         else if (modal == "friends") {
             console.log("Modal VIsible for friends", visible)
-            this.setState({modalQuestions: visible});
+            this.setState({modalFriends: visible});
         }
-        else if (modal == "user_comments") {
+        else if (modal == "userComments") {
             console.log("Modal VIsible for usercomments", visible)
-            this.setState({modalQuestions: visible});
+            this.setState({modalUserComments: visible});
         }
         
       }
 
       animate() {
-        let progress = 0;
+        
+        let maximum = this.props.data.Total_points/2000;
         this.setState({ progress });
         setTimeout(() => {
           this.setState({ indeterminate: false });
-          setInterval(() => {
-            progress += Math.random() / 3;
-            if (progress > newProgress) {
-              progress = newProgress;
+          var refreshId = setInterval(() => {
+            progress += Math.random() / 5;
+            if (progress > maximum) {
+              progress = maximum;
+              console.log("Inside IF")
+              clearInterval(refreshId);
+              return 0;
             }
-            this.setState({ progress });
+            this.setState({ progress: maximum });
+            console.log("After set max");
           }, 500);
-        }, 0);
+        }, 500);
+        
       }
 
     render() {
@@ -193,37 +251,43 @@ class UserInfo extends Component {
         console.log("Props in UserInfo", this.props);
         const { navigate } = this.props.navigation;
         return (
-            <ScrollView style={{ flex: 1, backgroundColor: '#DFD4B8'}} >
+             <ScrollView style={{ flex: 1, backgroundColor: '#DFD4B8'}} >
+             
                 <View style={styles.progressView}>
-                <Text style={styles.usernameText}> FatOldGuy </Text>
+                <Text style={styles.usernameText}> {this.props.data.Name} </Text>
+                <View style={{backgroundColor: 'transparent', alignSelf: 'center'}}>
                 <Progress.Pie 
                 progress={this.state.progress}
                 indeterminate={this.state.indeterminate} 
+                delay={1000}
                 size={200} 
                 color={colorOfBar}/>
-               <Text style={styles.pointsText}> {numberofPoints}/2000 Points </Text>
+                
+                </View>
+               <Text style={styles.pointsText}> {this.props.data.Total_points}/2000 Points </Text>
+               <Text style={{color: 'black', fontWeight: 'bold', fontSize: 18, paddingTop: 5}}> You are a {risk} risk of Depression </Text>
                 </View>
                 
                   
-                        {/* <Text style={styles.text}>  </Text> */}
+                       
                         <Animatable.Text 
                             animation="bounceIn" 
                             style={styles.text}
                             delay={delaySeconds}
-                            onPress={() => this.setModalVisible("likes",!this.state.modalLikes)}
+                            onPress={() => this.setModalVisible("blogTraffic",!this.state.modalBlogTraffic)}
                         >
-                        Your Number of Likes: {likes} 
+                        Your Number of Blog Traffic: {this.props.data.BlogTraffic} 
                         
                         </Animatable.Text>
 
-                        <Animatable.Text 
+                        {/* <Animatable.Text 
                             animation="bounceIn" 
                             style={styles.textSecond}
                             delay={delaySeconds}
-                            onPress={() => this.setModalVisible("likes",!this.state.modalLikes)}
+                            onPress={() => this.setModalVisible("blogTraffic",!this.state.modalBlogTraffic)}
                         >
                         This means you are in the {likesPercent}th percentile
-                        </Animatable.Text>
+                        </Animatable.Text> */}
 
                         <Animatable.View
                             animation="bounceIn" 
@@ -231,10 +295,10 @@ class UserInfo extends Component {
                             delay={delaySeconds}
                             > 
                         <Text style={styles.textBar}> Yours </Text>
-                        <Progress.Bar progress={likes/1000} width={200} color={"red"} />
+                        <Progress.Bar progress={this.props.data.BlogTraffic/10000} width={200} color={"red"} />
                         <Text style={styles.textBar}> Average </Text>
-                        <Progress.Bar progress={averageLikes/1000} width={200} />
-                        <Text style={styles.pointsAddition}> +{pointsLikes} Points </Text>
+                        <Progress.Bar progress={5299.136/10000} width={200} />
+                        {/* <Text style={styles.pointsAddition}> +0 Points </Text> */}
                         </Animatable.View>
 
                         <Animatable.Text 
@@ -243,7 +307,7 @@ class UserInfo extends Component {
                             delay={delaySeconds+200}
                             onPress={() => this.setModalVisible("comments",!this.state.modalcomments)}
                         >
-                        Your Number of Comments: {comments}
+                        Your Number of Comments: {this.props.data.MyComments}
                         </Animatable.Text>
 
                         <Animatable.Text 
@@ -252,7 +316,7 @@ class UserInfo extends Component {
                             delay={delaySeconds+200}
                             onPress={() => this.setModalVisible("comments",!this.state.modalcomments)}
                         >
-                        This means you are in the {commentPercent}th percentile
+                        This means you are in the {this.props.data.MyComments_percentile}th percentile
                         </Animatable.Text>
 
 
@@ -262,13 +326,13 @@ class UserInfo extends Component {
                             delay={delaySeconds+200}
                             > 
                         <Text style={styles.textBar}> Yours </Text>
-                        <Progress.Bar progress={comments/1000} width={200} color={"red"} />
+                        <Progress.Bar progress={this.props.data.MyComments/1000} width={200} color={"red"} />
                         <Text style={styles.textBar}> Average </Text>
-                        <Progress.Bar progress={averageComments/1000} width={200} />
-                        <Text style={styles.pointsAddition}> +{pointsComments } Points </Text>
+                        <Progress.Bar progress={165.1664/1000} width={200} />
+                        <Text style={styles.pointsAddition}> +{this.props.data.MyComments_points } Points </Text>
                         </Animatable.View>
 
-
+                       
 
                         <Animatable.Text 
                             animation="bounceIn" 
@@ -276,7 +340,7 @@ class UserInfo extends Component {
                             delay={delaySeconds+400}
                             onPress={() => this.setModalVisible("photos",!this.state.modalPhotos)}
                         >
-                        Your Number of Photos: {photos}
+                        Your Number of Photos: {this.props.data.Photos}
                         </Animatable.Text>
 
                         <Animatable.Text 
@@ -285,7 +349,7 @@ class UserInfo extends Component {
                             delay={delaySeconds+400}
                             onPress={() => this.setModalVisible("photos",!this.state.modalPhotos)}
                         >
-                        This means you are in the {photosPercent}th percentile
+                        This means you are in the {this.props.data.Photos_percentile}th percentile
                         </Animatable.Text>
                         
 
@@ -296,10 +360,10 @@ class UserInfo extends Component {
                             delay={delaySeconds+200}
                             > 
                         <Text style={styles.textBar}> Yours </Text>
-                        <Progress.Bar progress={photos/1000} width={200} color={"red"} />
+                        <Progress.Bar progress={this.props.data.Photos/100} width={200} color={"red"} />
                         <Text style={styles.textBar}> Average </Text>
-                        <Progress.Bar progress={averagePhotos/1000} width={200} />
-                        <Text style={styles.pointsAddition}> +{pointsPhotos } Points </Text>
+                        <Progress.Bar progress={12.89/100} width={200} />
+                        <Text style={styles.pointsAddition}> +{this.props.data.Photos_points } Points </Text>
                         </Animatable.View>
 
 
@@ -311,7 +375,7 @@ class UserInfo extends Component {
                             delay={delaySeconds+600}
                             onPress={() => this.setModalVisible("friends",!this.state.modalFriends)}
                         >
-                        Your Number of Friends: {friends}
+                        Your Number of Friends: {this.props.data.Friends}
                         </Animatable.Text>
 
                         <Animatable.Text 
@@ -320,7 +384,7 @@ class UserInfo extends Component {
                             delay={delaySeconds+600}
                             onPress={() => this.setModalVisible("friends",!this.state.modalFriends)}
                         >
-                        This means you are in the {friendsPercen}th percentile
+                        This means you are in the {this.props.data.Friends_percentile}th percentile
                         </Animatable.Text>
                         
 
@@ -331,10 +395,10 @@ class UserInfo extends Component {
                             delay={delaySeconds+200}
                             > 
                         <Text style={styles.textBar}> Yours </Text>
-                        <Progress.Bar progress={friends/1000} width={200} color={"red"} />
+                        <Progress.Bar progress={this.props.data.Friends/100} width={200} color={"red"} />
                         <Text style={styles.textBar}> Average </Text>
-                        <Progress.Bar progress={averageFriends/1000} width={200} />
-                        <Text style={styles.pointsAddition}> +{pointFriends } Points </Text>
+                        <Progress.Bar progress={8.19/100} width={200} />
+                        <Text style={styles.pointsAddition}> +{this.props.data.Friends_points } Points </Text>
                         </Animatable.View>
 
                         {/* user_comments */}
@@ -343,18 +407,18 @@ class UserInfo extends Component {
                             animation="bounceIn" 
                             style={styles.text}
                             delay={delaySeconds+800}
-                            onPress={() => this.setModalVisible("user_comments",!this.state.modalUserComments)}
+                            onPress={() => this.setModalVisible("userComments",!this.state.modalUserComments)}
                         >
-                        Your Number of User Comments: {user_comments}
+                        Your Number of User Comments: {this.props.data.UserComments}
                         </Animatable.Text>
 
                         <Animatable.Text 
                             animation="bounceIn" 
                             style={styles.textSecond}
                             delay={delaySeconds+800}
-                            onPress={() => this.setModalVisible("user_comments",!this.state.modalUserComm)}
+                            onPress={() => this.setModalVisible("userComments",!this.state.modalUserComments)}
                         >
-                        This means you are in the {userCommentsPerfect}th percentile
+                        This means you are in the {this.props.data.Ucommens_percentile}th percentile
                         </Animatable.Text>
                         
 
@@ -365,10 +429,10 @@ class UserInfo extends Component {
                             delay={delaySeconds+800}
                             > 
                         <Text style={styles.textBar}> Yours </Text>
-                        <Progress.Bar progress={user_comments/1000} width={200} color={"red"} />
+                        <Progress.Bar progress={this.props.data.UserComments/100} width={200} color={"red"} />
                         <Text style={styles.textBar}> Average </Text>
-                        <Progress.Bar progress={averageUsercomments/1000} width={200} />
-                        <Text style={styles.pointsAddition}> +{pointUserComments } Points </Text>
+                        <Progress.Bar progress={167.49/100} width={200} />
+                        <Text style={styles.pointsAddition}> +{this.props.data.Ucomments_points } Points </Text>
                         </Animatable.View>
 
 
@@ -393,14 +457,14 @@ class UserInfo extends Component {
                     <Modal
                         animationType="slide"
                         transparent={true}
-                        visible={this.state.modalLikes}
+                        visible={this.state.modalBlogTraffic}
                         onRequestClose={() => {alert("Modal has been closed.")}}
                         
                         
                     >
                     <View style={styles.textViewModal}>
                         <Text
-                        onPress={() => this.setModalVisible("likes",false)}
+                        onPress={() => this.setModalVisible("blogTraffic",false)}
                         > Users that receives less likes than the average user on blog posts may interpret this as negative feedback, contributing to feelings of loneliness and depression.
  </Text>
                     </View>
@@ -465,6 +529,62 @@ class UserInfo extends Component {
                     </Modal>
                 </View>
                 </Animatable.View>
+
+                 {/* Friends */}
+                 <Animatable.View 
+                            animation="bounceIn" 
+                            //style={styles.text}
+                            delay={1000}
+                            onPress={() => this.setModalVisible(!this.state.modalFriends)}
+                        >
+                       
+                
+                <View style={styles.modal}>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={this.state.modalFriends}
+                        onRequestClose={() => {alert("Modal has been closed.")}}
+                        
+                        
+                    >
+                    <View style={styles.textViewModal}>
+                        <Text
+                        onPress={() => this.setModalVisible("friends",false)}
+                        > Users that have less friends than average usually feel more lonely and experience more boredom, which are direct signs of depression
+</Text>
+                    </View>
+                    </Modal>
+                </View>
+                </Animatable.View>
+                {/* UComments */}
+                <Animatable.View 
+                            animation="bounceIn" 
+                            //style={styles.text}
+                            delay={1000}
+                            onPress={() => this.setModalVisible(!this.state.modalUserComments)}
+                        >
+                       
+                
+                <View style={styles.modal}>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={this.state.modalUserComments}
+                        onRequestClose={() => {alert("Modal has been closed.")}}
+                        
+                        
+                    >
+                    <View style={styles.textViewModal}>
+                        <Text
+                        onPress={() => this.setModalVisible("userComments",false)}
+                        >Users that comment more often than average on other people’s posts may feel that this directs their attention away from the user’s own loneliness since selflessness sometimes translates to self-loathing.
+
+</Text>
+                    </View>
+                    </Modal>
+                </View>
+                </Animatable.View>
             {/* Questions */}
                 <Animatable.View 
                             animation="bounceIn" 
@@ -498,7 +618,7 @@ class UserInfo extends Component {
                 
                 
 
-                
+                <MessageBarAlert ref="alert" />
             </ScrollView>
         );
     }
@@ -625,9 +745,9 @@ bindActionCreators(
 );
 
 const mapStateToProps = (state) => {
-    
+    const { data } = state.games;
     return {
-        
+        data
     };
 };
 

@@ -18,6 +18,37 @@ const INITIAL_STATE = {
         
     },
     username: '',
+    likes: '',
+    data: {
+        Birthday: '',
+        BlogTraffic: '',
+        Followers: '',
+        Following: '',
+        Friends: '',
+        Friends_percentile: '',
+        Friends_points: '',
+        Gender: '',
+        Job: '',
+        Joined: '',
+        Language: '',
+        LastOnLine: '',
+        Location: '',
+        MyComments: '',
+        MyComments_percentile: '',
+        MyComments_points: '',
+        Name: '',
+        Photos: '',
+        Photos_percentile: '',
+        Photos_points: '',
+        Points: '',
+        Posts: '',
+        Posts_Percentile: '',
+        Posts_points: '',
+        Serial: '',
+        Status: '',
+        likes: ''
+
+    }
     
 };
 

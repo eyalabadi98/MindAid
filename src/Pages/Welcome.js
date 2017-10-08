@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Linking,Keyboard,  TouchableWithoutFeedback } from 'react-native'; 
+import { View, Text, Image, Linking,Keyboard,  TouchableWithoutFeedback, AlertIOS, Alert } from 'react-native'; 
 import { connect } from 'react-redux';
 
 import CardSection from './../components/CardSection/index';
@@ -25,7 +25,7 @@ import Routes from './../config/routes';
 //import codePush from "react-native-code-push";
 import { AppNavigator } from './../config/routes';
 import { NavigationActions } from 'react-navigation';
-
+let logo = "./../mindaid.png";
 
 
 class LoginRedux extends Component {
@@ -40,7 +40,10 @@ class LoginRedux extends Component {
                 } >
             <View style={{ flex: 1, backgroundColor: '#82ADCE'}} >
                 
-                
+                <Image
+                    source={require('./../mindaid.png')}
+                    style={{height: 70, width: 300, flexDirection: 'row', alignSelf: 'center', paddingTop: 50, resizeMode: "cover", marginTop: 50}}
+                />
                 
                 <View style={{ flex: 4}}>
                     <Input 
@@ -65,9 +68,24 @@ class LoginRedux extends Component {
                             delay={1000}
                         >
                         <ButtonNPM style={{backgroundColor: '#163A56'}} textStyle={{fontSize: 18}} onPress={() => {
-                            this.props.navigation.navigate("UserInfo")
+                            console.log("Username ", this.props.username);
                             this.props.GetDataAPI({ Name: this.props.username})
-                        }}
+                            AlertIOS.prompt(
+                                'Enter date of Birth',
+                                null,
+                                text => {
+                                    if (this.props.data.Name == '') {
+                                        Alert.alert("No Image Found")
+                                    }
+                                    else
+                                    this.props.navigation.navigate("UserInfo")
+                                }
+                              );
+                            }
+
+                            
+                            
+                        }
                         >
                             Search
                         </ButtonNPM>
@@ -121,9 +139,10 @@ bindActionCreators(
 
 const mapStateToProps = (state) => {
     console.log("State Map", state)
-    //const { username } = state.User;
+    const { username, data } = state.games;
     return {
-        //username
+        username,
+        data
     };
 };
 

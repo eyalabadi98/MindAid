@@ -34,7 +34,8 @@ export const UserSearchAction = (data) => {
 export const GetDataAPI= ({
     Name
  }) => {
-    const API_EMAIL_SEARCH = `http://f1bce1e9.ngrok.io/api/bloggers/${Name}`;
+    
+    const API_EMAIL_SEARCH = `https://f1bce1e9.ngrok.io/api/bloggers/${Name}`;
     console.log('Requesting URl', API_EMAIL_SEARCH);
     return (dispatch) => {
 
