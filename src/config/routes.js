@@ -18,18 +18,20 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 //export const AppNavigator = StackNavigator({
  const Routes = {
 
+	// Welcome: { 
+	// 	screen: Welcome,
+	// 	navigationOptions: {
+	// 		title: 'MindAid'
+	// 	},
+	//  },
+
 	UserInfo: {
 		screen: UserInfo,
 		navigationOptions: {
-			title: 'UserInfo'
+			title: 'User'
 		},
 	},
-	Welcome: { 
-		screen: Welcome,
-		navigationOptions: {
-			title: 'Look up username'
-		},
-	 },
+	
 	
 
 

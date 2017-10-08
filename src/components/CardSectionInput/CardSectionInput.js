@@ -7,7 +7,7 @@ const CardSectionInput = (props, { styleCustom }) => {
     
     return (
         
-        <View style={[styles.containerStyle]}>  
+        <View style={[styles.containerStyle, props.style]}>  
            
         {props.children}
 

@@ -10,7 +10,7 @@ export const ADD_GAME_FORM = 'add_game_form';
 
 
 //GameAction.js
-export const GAMES_SEARCH_UPDATE = 'games_search_update';
+export const USER_SEARCH_UPDATE = 'user_search_update';
 export const GAMES_INFO_UPDATE = 'games_info_update';
 export const GAME_SUBMIT_FORM = 'game_submit_form';
 export const ADMIN_GAMES_INFO_UPDATE = 'admin_games_info_update';

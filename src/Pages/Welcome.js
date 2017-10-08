@@ -11,9 +11,11 @@ import Header from './../components/Header';
 //import { emailChanged, passwordChanged, loginUser } from '../actions';
 import Spinner from './../components/Spinner/index';
 import { StackNavigator } from 'react-navigation';
+import ButtonNPM from 'apsl-react-native-button'
 
 
-import * as Games from '../actions';
+import * as Animatable from 'react-native-animatable';
+import * as Data from '../actions';
 import Picker from 'react-native-picker';
 
 import { bindActionCreators } from 'redux';
@@ -30,7 +32,7 @@ class LoginRedux extends Component {
    
     
     render() {
-        
+        console.log('Props in Welcome', this.props);
         const { navigate } = this.props.navigation;
         return (
             <View style={{ flex: 1, backgroundColor: 'lightblue'}} >
@@ -41,18 +43,30 @@ class LoginRedux extends Component {
                     <Input 
                         style={styles.input} 
                         placeholder="Enter your Username" 
-                        //onChangeText={text => this.props.gamesSearchForm('gameKey', text)}
-                        //value={this.props.gameKey}
+                        onChangeText={text => this.props.UserSearchAction('username', text)}
                         autoFocus={false}
                         returnKeyType='done'
                     />
                 </View>
                 <View style={{ height: 40, backgroundColor: 'transparent', flex: 1 }}>
-                    <Text
+                    {/* <Text
                     style={styles.buttonStyle}
+                    onPress={() => console.log("Pressed Search")}
                     >
                         Search
-                    </Text>
+                    </Text> */}
+                        <Animatable.View 
+                            animation="bounceIn" 
+                            style={styles.text}
+                            delay={1000}
+                        >
+                        <ButtonNPM style={{backgroundColor: 'lightgreen'}} textStyle={{fontSize: 18}}>
+                            Search
+                        </ButtonNPM>
+                        </Animatable.View>
+                    
+                    
+                    
                 </View>
             </View>
         );
@@ -81,6 +95,7 @@ const styles = {
              marginBottom: 90,
              textAlign: 'center',
              flexDirection: 'row',
+             backgroundColor: 'transparent'
 
 
              //height: 20,
@@ -90,15 +105,16 @@ const styles = {
 const mapDispatchToProps = dispatch =>
 bindActionCreators(
   {
-    ...Games
+    ...Data
   },
   dispatch
 );
 
-const mapStateToProps = ({ auth }) => {
-    const { email, password, error, loading } = auth;
+const mapStateToProps = (state) => {
+    console.log("State Map", state)
+    //const { username } = Games;
     return {
-        email, password, error, loading,
+        //username
     };
 };
 

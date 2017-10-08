@@ -9,7 +9,8 @@ import {
     RESET_REDUX_GAMES,
     SUBMIT_GAME_FORM,
     RESET_SAVED,
-    API_EMAIL_SUCCESS
+    API_EMAIL_SUCCESS,
+    USER_SEARCH_UPDATE
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -61,7 +62,7 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 [action.payload.prop]: action.payload.value
             };
-        case GAMES_SEARCH_UPDATE:
+        case USER_SEARCH_UPDATE:
             return {
                 ...state,
                 [action.field]: action.value
